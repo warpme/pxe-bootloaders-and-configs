@@ -1,0 +1,9 @@
+
+# File format is following:
+# <type>,<server>,		<login>,			<password>,	<time>,	<notify_IP>,	<path to picture>
+# Allowable <types> are: "imap", "pop3" and "pop3ssl"
+
+
+imap,	pop.gmail.com,		gmail_login,			password1,	5,	127.0.0.1,	/usr/local/share/phonebook-pictures/user1.picture
+pop3ssl,poczta.o2.pl,		o2_login,			password2,	5,	127.0.0.1,	/usr/local/share/phonebook-pictures/user2.picture
+pop3,	poczta.o2.pl,		o2_login,			password3,	5,	127.0.0.1,	/usr/local/share/phonebook-pictures/user3.picture

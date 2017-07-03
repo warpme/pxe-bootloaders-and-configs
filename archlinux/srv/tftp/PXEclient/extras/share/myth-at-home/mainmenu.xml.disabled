@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mythmenu name="MAIN">
+
+    <button>
+        <type>TV_WATCH_RECORDINGS</type>
+        <text>Nagrania</text>
+        <description>Oglądaj Twoje</description>
+        <action>TV_WATCH_RECORDING</action>
+    </button>
+
+    <!--<button>
+        <type>VIDEO_BROWSER</type>
+        <text>Filmy</text>
+        <description>Oglądaj Twoje</description>
+        <action>JUMP Video Default</action>
+    </button>
+
+    <button>
+        <type>MUSIC_PLAY</type>
+        <text>Muzyka</text>
+        <description>Twoja</description>
+        <action>JUMP Play music</action>
+        <action>JUMP Select music playlists</action>
+        <depends>mythmusic</depends>
+    </button>
+
+    <button>
+        <type>INTERNET_RADIO</type>
+        <text>Radio</text>
+        <description>Włącz Internetowe</description>
+        <action>JUMP Play radio stream</action>
+        <depends>mythmusic</depends>
+    </button>-->
+
+    <button>
+        <type>TV_WATCH_TV</type>
+        <description>Oglądaj</description>
+        <text>TV na Żywo</text>
+        <action>TV_WATCH_LIVE</action>
+    </button>
+
+    <button>
+        <type>MENU_OPTICAL_DISKS</type>
+        <text>DVD i Bluray</text>
+        <description>Odtwarzaj Twoje</description>
+        <!--optical_disk<depends>disabled</depends>-->
+        <action>MENU optical_menu.xml</action>
+    </button>
+
+    <button>
+        <type>IMAGES</type>
+        <text>Zdjęcia</text>
+        <description>Oglądaj Twoje</description>
+        <action>JUMP Gallery Default</action>
+    </button>
+
+    <button>
+        <type>IMAGES</type>
+        <text>Zdjęcia</text>
+        <description>Oglądaj Twoje</description>
+        <action>PLUGIN mythgallery</action>
+        <depends>mythgallery</depends>
+    </button>
+
+    <button>
+        <type>WEATHER</type>
+        <text>Pogoda</text>
+        <action>PLUGIN mythweather</action>
+        <description>Sprawdź jaka jest</description>
+        <depends>mythweather</depends>
+    </button>
+
+    <button>
+        <type>GAME</type>
+        <text>Gry</text>
+        <description>Graj w Twoje</description>
+        <action>PLUGIN mythgame</action>
+        <depends>mythgame</depends>
+    </button>
+
+    <button>
+        <type>PHONE</type>
+        <text>Telefon</text>
+        <description>Zadzwoń</description>
+        <depends>disabled</depends>
+        <action>MENU phone.xml</action>
+    </button>
+
+    <button>
+        <type>SETTINGS_GENERAL</type>
+        <text>Narzędzia</text>
+        <description>Systemowe</description>
+        <action>MENU mms_settings.xml</action>
+    </button>
+
+    <button>
+        <type>SETUP_MENU</type>
+        <text>Setup</text>
+        <description>Twoje</description>
+        <action>MENU main_settings.xml</action>
+        <password>SetupPinCode</password>
+    </button>
+
+    <button>
+        <type>ZONEMINDER</type>
+        <text>Monitoring</text>
+        <description>Sprawdz</description>
+        <action>MENU zonemindermenu.xml</action>
+        <depends>mythzoneminder</depends>
+    </button>
+
+    <!--<button>
+        <type>WEBPAGE</type>
+        <text>Internet</text>
+        <description>Przeglądaj</description>
+        <action>MENU mms_web.xml</action>
+        <depends>mythbrowser</depends>
+    </button>-->
+
+    <button>
+        <type>TV_SCHEDULE_RECORDINGS</type>
+        <text>Programuj</text>
+        <description>Audycje TV</description>
+        <action>MENU mms_guide.xml</action>
+    </button>
+
+</mythmenu>
