@@ -106,7 +106,7 @@ echo "      Script will launch 3 config editor sessions to examine/modify"
 echo "      relevant config files where You can change"
 echo "      IP addressing & DB creditentials (if needed)..."
 echo " "
-echo "v0.1, warpme@o2.pl "
+echo "v0.2, warpme@o2.pl "
 echo " "
 
 prompt_to_continue
@@ -161,8 +161,8 @@ echo " "
 sudo cp -R ./var/lib/tftpboot/* ${tftp_root}/
 
 echo "==> Adding SELinux tftp context for PXE related dirs..."
-sudo chcon -R -L -t tftpdir_rw_t ${tftp_root}/PXEclient/bootloaders
-# sudo chcon -R -L -t tftpdir_rw_t ${tftp_root}/PXEclient/ipxe.cfg
+sudo semanage fcontext -a -t public_content_rw_t "${tftp_root}/PXEclient(/.*)?"
+sudo restorecon -F -R -v ${tftp_root}/PXEclient
 
 echo "==> Enabling Firewall for TFTP server"
 sudo firewall-cmd --add-service=tftp --permanent
@@ -232,13 +232,6 @@ start_and_enable_service httpd
 echo "==> Enabling Firewall for WEB server"
 sudo firewall-cmd --add-service=http --permanent
 sudo firewall-cmd --reload
-
-echo "==> Adding SELinux httpd context for MiniMyth2 dirs..."
-sudo chcon -R -L -t httpd_sys_content_rw_t ${tftp_root}/PXEclient/boot.img
-sudo chcon -R -L -t httpd_sys_content_rw_t ${tftp_root}/PXEclient/conf
-sudo chcon -R -L -t httpd_sys_content_rw_t ${tftp_root}/PXEclient/conf-rw
-sudo chcon -R -L -t httpd_sys_content_rw_t ${tftp_root}/PXEclient/extras
-sudo chcon -R -L -t httpd_sys_content_rw_t ${tftp_root}/PXEclient/ipxe.cfg
 
 #--------------------------------------------------------------------------------
 
