@@ -1,6 +1,6 @@
 #!/bin/sh
 
-
+minimyth2_files="http://31.178.146.208"
 delay_to_start_edits=5
 tftp_root="/var/lib/tftpboot/"
 
@@ -98,6 +98,7 @@ echo "  2. install TFTP/DHCP/WWW servers on this host"
 echo "  3. configure TFTP/DHCP/WWW acordingly to allow PXE booting of MiniMyth2"
 echo "  4. download and install current MiniMyth2 PXE boot image from MiniMyth2 site"
 echo "  5. enable TFTP/DHCP/WWW servers to auto-start"
+echo "  6. optionally install MiniMyth2 theme"
 echo " "
 echo "After above steeps You should have up & running PXE enviroment ready to"
 echo "zero-effort provisioning of MiniMyth2 frontends"
@@ -109,15 +110,16 @@ echo "      Script will launch 3 config editor sessions to examine/modify"
 echo "      relevant config files where You can change"
 echo "      IP addressing & DB creditentials (if needed)..."
 echo " "
-echo "v0.1, warpme@o2.pl "
+echo "v0.2, warpme@o2.pl "
 echo " "
 
 prompt_to_continue
 
-download_file http://warped.homenet.org/pxe-bootloaders-and-configs.tar.bz2
+download_file ${minimyth2_files}/pxe-bootloaders-and-configs.tar.bz2
 
 echo "==> Unpacking PXE files..."
 install_package bsdtar
+install_package bzip2
 bsdtar -xpf pxe-bootloaders-and-configs.tar.bz2 -C ./
 cd ./pxe-bootloaders-and-configs/ubuntu
 
@@ -177,7 +179,7 @@ if [ x${type} = "xmaster" ] ; then
 
   prompt_to_continue
 
-  download_file http://warped.homenet.org/MiniMyth2-master.tar.bz2
+  download_file ${minimyth2_files}/MiniMyth2-master.tar.bz2
   echo "==> Unpacking MiniMyth2 files..."
   sudo bsdtar -xpf MiniMyth2-master.tar.bz2 -C ${tftp_root}/PXEclient/
 
@@ -188,7 +190,7 @@ else
 
   prompt_to_continue
 
-  download_file http://warped.homenet.org/MiniMyth2-0.28-fixes.tar.bz2
+  download_file ${minimyth2_files}/MiniMyth2-0.28-fixes.tar.bz2
   echo "==> Unpacking MiniMyth2 files..."
   sudo bsdtar -xpf MiniMyth2-0.28-fixes.tar.bz2 -C ${tftp_root}/PXEclient/
 
@@ -220,6 +222,18 @@ sudo nano ${tftp_root}/PXEclient/conf/default/minimyth.conf
 prompt_to_continue
 
 clear
+echo " "
+echo "Do You want to install MiniMyth2 theme (y/n)?"
+echo " "
+read ans
+if [ x${ans} = "xy" ] ; then
+    download_file ${minimyth2_files}/MiniMyth2-theme.sfs.bz2
+    bunzip2 MiniMyth2-theme.sfs.bz2
+    sudo mkdir -p ${tftp_root}/PXEclient/conf/default/themes
+    sudo mv ./MiniMyth2-theme.sfs ${tftp_root}/PXEclient/conf/default/themes/
+    sudo ln -sf ${tftp_root}/PXEclient/conf/default/themes/MiniMyth2-theme.sfs ${tftp_root}/PXEclient/conf/default/themes/Default.sfs
+fi
+
 echo "Cleaning files..."
 echo " "
 echo "==> Done!"

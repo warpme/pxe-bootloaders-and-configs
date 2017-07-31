@@ -1,6 +1,6 @@
 #!/bin/sh
 
-
+minimyth2_files="http://31.178.146.208"
 delay_to_start_edits=5
 tftp_root="/srv/tftp"
 
@@ -87,6 +87,7 @@ download_file() {
 }
 
 clear
+
 echo " "
 echo "This _VERY SIMPLE_ script will:"
 echo " "
@@ -95,6 +96,7 @@ echo "  2. install TFTP/DHCP/WWW servers on this host"
 echo "  3. configure TFTP/DHCP/WWW acordingly to allow PXE booting of MiniMyth2"
 echo "  4. download and install current MiniMyth2 PXE boot image from MiniMyth2 site"
 echo "  5. enable TFTP/DHCP/WWW servers to auto-start"
+echo "  6. optionally download and install MiniMyth2 theme"
 echo " "
 echo "After above steeps You should have up & running PXE enviroment ready to"
 echo "zero-effort provisioning of MiniMyth2 frontends"
@@ -106,15 +108,15 @@ echo "      Script will launch 3 config editor sessions to examine/modify"
 echo "      relevant config files where You can change"
 echo "      IP addressing & DB creditentials (if needed)..."
 echo " "
-echo "v0.1, warpme@o2.pl "
+echo "v0.2, warpme@o2.pl "
 echo " "
 
 prompt_to_continue
 
-download_file http://warped.homenet.org/pxe-bootloaders-and-configs.tar.bz2
+download_file ${minimyth2_files}/pxe-bootloaders-and-configs.tar.bz2
 
 echo "==> Unpacking PXE files..."
-install_package bsdtar
+install_package libarchive bzip2
 bsdtar -xpf pxe-bootloaders-and-configs.tar.bz2 -C ./
 cd ./pxe-bootloaders-and-configs/archlinux
 
@@ -126,7 +128,7 @@ prompt_to_continue
 if [ -e /etc/dhcpd.conf ] ; then
     sudo mv /etc/dhcpd.conf /etc/dhcpd.conf.backup.$$
 fi
-install_package isc-dhcp
+install_package dhcp
 
 echo "==> Configuring DHCP server:"
 echo " "
@@ -142,28 +144,28 @@ sudo nano /etc/dhcpd.conf
 
 prompt_to_continue
 
-start_and_enable_service isc-dhcp
+start_and_enable_service dhcpd4
 
 #--------------------------------------------------------------------------------
 
-install_package httpd
+install_package apache
 
 echo "==> Configuring WEB server"
 sudo cp ./etc/httpd/conf/extra/httpd-minimyth2-boot.conf         /etc/httpd/conf/extra/httpd-minimyth2-boot.conf
 sudo cp ./etc/httpd/conf/extra/httpd-minimyth2-confrw-write.conf /etc/httpd/conf/extra/httpd-minimyth2-confrw-write.conf
 
-sudo echo "# Enabling minimyth2 PXE boot via HTTP" >> /etc/apache2/apache2.conf
-sudo echo "Include conf-enabled/extra/httpd-minimyth2-boot.conf" >> /etc/apache2/apache2.conf
-sudo echo "# Enabling minimyth2 connf-rw PUT support" >> /etc/apache2/apache2.conf
-sudo echo "Include conf-enabled/extra/httpd-minimyth2-confrw-write.conf" >> /etc/apache2/apache2.conf
+sudo echo "# Enabling minimyth2 PXE boot via HTTP"               >> /etc/httpd/conf/httpd.conf
+sudo echo "Include conf-enabled/extra/httpd-minimyth2-boot.conf" >> /etc/httpd/conf/httpd.conf
+sudo echo "# Enabling minimyth2 connf-rw PUT support"            >> /etc/httpd/conf/httpd.conf
+sudo echo "Include conf-enabled/extra/httpd-minimyth2-confrw-write.conf" >> /etc/httpd/conf/httpd.conf
 
 start_and_enable_service httpd
 
 #--------------------------------------------------------------------------------
 
-install_package tftpd-hpa
+install_package tftp-hpa
 
-start_and_enable_service tftpd-hpa
+start_and_enable_service tftpd
 
 echo "==> Installing PXE bootloader and other files..."
 echo " "
@@ -176,7 +178,7 @@ if [ x${type} = "xmaster" ] ; then
 
   prompt_to_continue
 
-  download_file http://warped.homenet.org/MiniMyth2-master.tar.bz2
+  download_file ${minimyth2_files}/MiniMyth2-master.tar.bz2
   echo "==> Unpacking MiniMyth2 files..."
   sudo bsdtar -xpf MiniMyth2-master.tar.bz2 -C ${tftp_root}/PXEclient/
 
@@ -187,7 +189,7 @@ else
 
   prompt_to_continue
 
-  download_file http://warped.homenet.org/MiniMyth2-0.28-fixes.tar.bz2
+  download_file ${minimyth2_files}/MiniMyth2-0.28-fixes.tar.bz2
   echo "==> Unpacking MiniMyth2 files..."
   sudo bsdtar -xpf MiniMyth2-0.28-fixes.tar.bz2 -C ${tftp_root}/PXEclient/
 
@@ -219,6 +221,18 @@ sudo nano ${tftp_root}/PXEclient/conf/default/minimyth.conf
 prompt_to_continue
 
 clear
+echo " "
+echo "Do You want to install MiniMyth2 theme (y/n)?"
+echo " "
+read ans
+if [ x${ans} = "xy" ] ; then
+    download_file ${minimyth2_files}/MiniMyth2-theme.sfs.bz2
+    bunzip2 MiniMyth2-theme.sfs.bz2
+    sudo mkdir -p ${tftp_root}/PXEclient/conf/default/themes
+    sudo mv ./MiniMyth2-theme.sfs ${tftp_root}/PXEclient/conf/default/themes/
+    sudo ln -sf ${tftp_root}/PXEclient/conf/default/themes/MiniMyth2-theme.sfs ${tftp_root}/PXEclient/conf/default/themes/Default.sfs
+fi
+
 echo "Cleaning files..."
 echo " "
 echo "==> Done!"
