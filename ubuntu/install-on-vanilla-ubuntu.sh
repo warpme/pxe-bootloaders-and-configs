@@ -110,7 +110,7 @@ echo "      Script will launch 3 config editor sessions to examine/modify"
 echo "      relevant config files where You can change"
 echo "      IP addressing & DB creditentials (if needed)..."
 echo " "
-echo "v0.2, warpme@o2.pl "
+echo "v0.3, warpme@o2.pl "
 echo " "
 
 prompt_to_continue
