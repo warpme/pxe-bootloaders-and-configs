@@ -1,7 +1,6 @@
 #!/bin/sh
 
-
-minimyth2_files="http://31.178.146.208"
+minimyth2_files="https://dl.bintray.com/warpme/minimyth2/"
 delay_to_start_edits=5
 tftp_root="/var/lib/tftpboot"
 
@@ -118,7 +117,7 @@ install_package nano
 install_package bsdtar
 install_package bzip2
 
-download_file ${minimyth2_files}/pxe-bootloaders-and-configs.tar.bz2
+download_file ${minimyth2_files}pxe-bootloaders-and-configs.tar.bz2
 
 echo "==> Unpacking PXE files..."
 bsdtar -xpf pxe-bootloaders-and-configs.tar.bz2 -C ./
@@ -179,9 +178,21 @@ if [ x${type} = "xmaster" ] ; then
 
   prompt_to_continue
 
-  download_file ${minimyth2_files}/MiniMyth2-master.tar.bz2
+  download_file ${minimyth2_files}MiniMyth2-master.tar.bz2
   echo "==> Now unpacking MiniMyth2 files..."
   sudo bsdtar -xpf MiniMyth2-master.tar.bz2 -C ${tftp_root}/PXEclient/
+
+
+elif [ x${type} = "0.28-fixes" ] ; then
+
+  echo " "
+  echo "==> Now will download and install MiniMyth2 MythTV 0.28-fixes PXE boot files..."
+
+  prompt_to_continue
+
+  download_file ${minimyth2_files}MiniMyth2-0.28-fixes.tar.bz2
+  echo "==> Now unpacking MiniMyth2 files..."
+  sudo bsdtar -xpf MiniMyth2-0.28-fixes.tar.bz2 -C ${tftp_root}/PXEclient/
 
 else
 
@@ -190,9 +201,9 @@ else
 
   prompt_to_continue
 
-  download_file ${minimyth2_files}/MiniMyth2-0.28-fixes.tar.bz2
+  download_file ${minimyth2_files}MiniMyth2-29-fixes.tar.bz2
   echo "==> Now unpacking MiniMyth2 files..."
-  sudo bsdtar -xpf MiniMyth2-0.28-fixes.tar.bz2 -C ${tftp_root}/PXEclient/
+  sudo bsdtar -xpf MiniMyth2-29-fixes.tar.bz2 -C ${tftp_root}/PXEclient/
 
 fi
 
@@ -243,7 +254,7 @@ echo "Do You want to install MiniMyth2 theme (y/n)?"
 echo " "
 read ans
 if [ x${ans} = "xy" ] ; then
-    download_file ${minimyth2_files}/MiniMyth2-theme.sfs.bz2
+    download_file ${minimyth2_files}MiniMyth2-theme.sfs.bz2
     bunzip2 MiniMyth2-theme.sfs.bz2
     sudo mkdir -p ${tftp_root}/PXEclient/conf/default/themes
     sudo mv ./MiniMyth2-theme.sfs ${tftp_root}/PXEclient/conf/default/themes/
