@@ -1,7 +1,6 @@
 #!/bin/sh
 
 minimyth2_files="https://dl.bintray.com/warpme/minimyth2/"
-delay_to_start_edits=5
 tftp_root="/var/lib/tftpboot/"
 
 
@@ -110,7 +109,7 @@ echo "      Script will launch 3 config editor sessions to examine/modify"
 echo "      relevant config files where You can change"
 echo "      IP addressing & DB creditentials (if needed)..."
 echo " "
-echo "v0.3, warpme@o2.pl "
+echo "v0.5, warpme@o2.pl "
 echo " "
 
 prompt_to_continue
@@ -133,11 +132,12 @@ echo " "
 sudo cp ./etc/dhcp/dhcpd.conf /etc/dhcp/
 clear
 echo " "
-echo "==> Within $delay_to_start_edits sec.script now will launch editor to eventually edit Yours DHCP IP settings ..."
+echo "==> Script now will launch editor to eventually edit Yours DHCP IP settings ..."
 echo "    If host with TFTP/DHCP/WWW servers and Internet default gateway"
 echo "    is at IP=192.168.1.254, You can just close editor and press <ENTER> to continue"
 echo " "
-sleep $delay_to_start_edits
+prompt_to_continue
+
 sudo nano /etc/dhcp/dhcpd.conf
 
 prompt_to_continue
@@ -207,27 +207,29 @@ else
 
 fi
 
-sudo mv ${tftp_root}/PXEclient/8*/* ${tftp_root}/PXEclient/boot.img/
-sudo rmdir ${tftp_root}/PXEclient/8*
+sudo mv ${tftp_root}/PXEclient/ram-minimyth2-*/* ${tftp_root}/PXEclient/boot.img/
+sudo rmdir ${tftp_root}/PXEclient/ram-minimyth2-*
 
 clear
 echo " "
-echo "==> Within $delay_to_start_edits sec.script will launch editor to eventually edit IP settings..."
+echo "==> Script will launch editor to eventually edit IP settings..."
 echo "    If host with WWW server is at IP=192.168.1.254,"
 echo "    You can just close editor and press ENTER to continue"
 echo " "
-sleep $delay_to_start_edits
+prompt_to_continue
+
 sudo nano ${tftp_root}/PXEclient/ipxe.cfg/default
 
 prompt_to_continue
 
 clear
 echo " "
-echo "==> Within $delay_to_start_edits sec.script will launch editor to eventually edit MythTV DB"
+echo "==> Script will launch editor to eventually edit MythTV DB"
 echo "    creditentials (lines 132/133). If Yours MythTV DB creditentials"
 echo "    are \"mythtv:mythtv\", you can just close editor and press ENTER to continue..."
 echo " "
-sleep $delay_to_start_edits
+prompt_to_continue
+
 sudo nano ${tftp_root}/PXEclient/conf/default/minimyth.conf
 
 prompt_to_continue
