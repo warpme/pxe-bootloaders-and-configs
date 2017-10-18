@@ -11,7 +11,7 @@
 # nc -u -l -b en0 9353
 #
 # iPXE boot:
-kernel http://192.168.1.254/minimyth2/boot.img/kernel ro root=/dev/ram0 initrd=rootfs ramdisk_size=172000
+kernel http://192.168.1.254/minimyth2/boot.img/kernel ro root=/dev/ram0 initrd=rootfs ramdisk_size=192000
 initrd http://192.168.1.254/minimyth2/boot.img/rootfs
 
 boot

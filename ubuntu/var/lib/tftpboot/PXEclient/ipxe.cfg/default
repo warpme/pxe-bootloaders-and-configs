@@ -7,11 +7,11 @@
 # kernel http://192.168.1.254/minimyth2/nfs-minimyth2-boot/kernel rw root=/dev/nfs ip=dhcp nfsroot=192.168.1.254:/myth/nfs-minimyth2-devel,v3
 #
 # iPXE boot with Netconsole:
-# kernel http://192.168.1.254/minimyth2/boot.img/kernel ro root=/dev/ram0 initrd=rootfs ramdisk_size=172000 netconsole=4444@192.168.1.130/eth0,9353@192.168.1.254/42:84:b6:8a:59:ec
+# kernel http://192.168.1.254/minimyth2/boot.img/kernel ro root=/dev/ram0 initrd=rootfs ramdisk_size=192000 netconsole=4444@192.168.1.130/eth0,9353@192.168.1.254/42:84:b6:8a:59:ec
 # nc -u -l -b en0 9353
 #
 # iPXE boot:
-kernel http://192.168.1.254/minimyth2/boot.img/kernel ro root=/dev/ram0 initrd=rootfs ramdisk_size=172000
+kernel http://192.168.1.254/minimyth2/boot.img/kernel ro root=/dev/ram0 initrd=rootfs ramdisk_size=192000
 initrd http://192.168.1.254/minimyth2/boot.img/rootfs
 
 boot
